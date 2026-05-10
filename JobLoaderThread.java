@@ -41,7 +41,6 @@ public class JobLoaderThread extends Thread{
            }
        }
 
-       System.out.println("Job Loader Thread terminated at:" + systemCall.getSystemTime() + "ms");
 }
 
    private boolean enoughMemory(PCB job) {
