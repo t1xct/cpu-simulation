@@ -61,7 +61,7 @@ class Scheduler {
 
             PCB current = local.remove(0);
 
-            executeProcess(current,local);
+            executeProcess(current);
         }
 
         System.out.println("[Time " + time +
@@ -294,5 +294,26 @@ class Scheduler {
 
         } catch (InterruptedException ignored) {
         }
+    }
+    private void executeProcess(PCB current) {
+
+        if (current.startTime == -1) current.startTime = time;
+        current.state = PCB.ProcessState.RUNNING;
+
+        systemCalls.setTime(time);
+        systemCalls.createProcess(current.ProcessID);
+
+        System.out.println("[Time " + time + "ms] Process " +
+                current.ProcessID + " executing for " +
+                current.RemainingTime + "ms");
+
+        int start = time;
+        int burst = current.RemainingTime;
+
+        time += burst;
+
+        current.RemainingTime = 0;
+        ganttChart.add(new GanttEntry(current.ProcessID, start, time));
+        finishProcess(current);
     }
 }
